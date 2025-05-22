@@ -1,0 +1,29 @@
+{% extends 'tracker/layout.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div id="dex" class="mx-auto" style="background-image: url('{% static 'tracker/images/dex.png' %}');">
+        <div id="dex-main" class="d-flex flex-column py-5 overflow-auto" style="height: 100%; width: 100%;">
+            <div class="d-flex justify-content-center align-items-center" style="height: 20%;">
+                <div id="dex-head">
+                    {% block dex_head %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="d-flex flex-column justify-content-center px-5 mx-md-5" style="height: 57%;">
+                <div id="dex-body">
+                    {% block dex_body %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="d-flex justify-content-start align-items-center px-5 mx-md-5" style="height: 23%;">
+                <div id="dex-tail">
+                    {% block dex_tail %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

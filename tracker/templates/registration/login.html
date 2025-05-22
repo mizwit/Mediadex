@@ -1,0 +1,38 @@
+{% extends 'tracker/dex.html' %}
+
+{% block title %}Login - Mediadex{% endblock %}
+
+{% block dex_head %}
+<h1 class="display-4 font-monospace fw-bold" style="color: var(--tertiary);">SIGN-IN</h1>
+{% endblock %}
+
+{% block dex_body %}
+{% for field, error_list in form.errors.items %}
+{% for error in error_list %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <div>{{ error }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{%  endfor %}
+{%  endfor %}
+
+<form id="login-form" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <span class="input-group-text">Username</span>
+        {{ form.username }}
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text">Password</span>
+        {{ form.password }}
+    </div>
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+{% endblock %}
+
+{% block dex_tail %}
+<input class="btn btn-lg border text-white hoverable" type="submit" form="login-form" value="Login" style="background-color: var(--secondary);">
+<div style="color: var(--tertiary)">
+    New User? <a class="link-light" href="{% url 'register' %}" title="Register">Register</a>.
+</div>
+{% endblock %}

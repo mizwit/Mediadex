@@ -1,0 +1,110 @@
+{% extends 'tracker/layout.html' %}
+{% load static %}
+
+{% block header %}
+<section class="py-4" style="background-color: var(--tertiary);">
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <div>
+                <img src="{% static 'tracker/images/logo.png' %}" alt="Mediadex Logo" width="75" height="75">
+            </div>
+            <div>
+                <h1 class="d-inline display-1 brand-name" style="color: var(--primary);">Mediadex</h1>
+            </div>
+        </div>
+        <div class="font-monospace fw-bold text-secondary">
+            <h5 style="padding: 0px !important; margin: 0px !important;"><i class="bi bi-arrow-right"></i> Track your favorite media.</h5>
+            <h5 style="padding: 0px !important; margin: 0px !important;"><i class="bi bi-arrow-right"></i> Explore popular titles.</h5>
+            <h5 style="padding: 0px !important; margin: 0px !important;"><i class="bi bi-arrow-right"></i> Build your personal collection.</h5>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block body %}
+<div class="container text-center mb-4">
+    <div class="row">
+        <div class="col-4">
+            <i class="bi bi-person-fill-add" style="font-size: 4rem;"></i>
+            <h5>Create your Account</h5>
+            <div class="px-lg-4 px-xl-5 mx-xl-3 mx-xxl-5">
+                <small class="text-body-secondary">
+                    <a href="{% url 'login' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Sign-In
+                    </a> to your profile or 
+                    <a href="{% url 'register' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Register
+                    </a> for a new one.
+                </small>
+            </div>
+        </div>
+        <div class="col-4">
+            <i class="bi bi-search" style="font-size: 4rem;"></i>
+            <h5>Search & Explore</h5>
+            <div class="px-lg-5 mx-xl-3 mx-xxl-5">
+                <small class="text-body-secondary">
+                    <a href="{% url 'search' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Search
+                    </a> for titles and discover trending movies.
+                </small>
+            </div>
+        </div>
+        <div class="col-4">
+            <i class="bi bi-collection-play-fill" style="font-size: 4rem;"></i>
+            <h5>Build Collections</h5>
+            <div class="px-lg-4 px-xl-5 mx-xl-3 mx-xxl-5">
+                <small class="text-body-secondary">
+                    Organize by 
+                    <a href="{% url 'watched' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Watched
+                    </a>, 
+                    <a href="{% url 'watchlist' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Watchlist
+                    </a> or 
+                    <a href="{% url 'favorites' %}" class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                        Favorites
+                    </a>.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% for collection in collections %}
+<div>
+    <h1 class="display-6">{{ collection.title }}</h1>
+    <hr>
+    <div class="row">
+        {% for movie in collection.movies %}
+        <div class="col-4 col-sm-3 col-md-2 col-xxl-1 text-center mb-4">
+            <a href="{% url 'movie' movie.id %}">
+                <div class="movie-card card shadow shadow-lg">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="card-img" alt="{{ movie.title }}">
+                    <div class="card-img-overlay overflow-y-auto" style="display: none; background-color: black; opacity: 0.85;">
+                        <h5 class="card-title" style="color: white;">{{ movie.title }} ({{ movie.release_date|slice:":4" }})</h5>
+                    </div>
+                </div>
+            </a>
+        </div> 
+        {% endfor %}
+    </div>
+</div>
+<br>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.movie-card').forEach(card => {
+            const overlay = card.querySelector('.card-img-overlay');
+            card.addEventListener('mouseover', (event) => {
+                overlay.style.display = 'block';
+            });
+            card.addEventListener('mouseout', (event) => {
+                overlay.style.display = 'none';
+            });  
+        });
+    });
+</script>
+{% endblock %}

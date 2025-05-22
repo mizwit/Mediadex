@@ -1,0 +1,42 @@
+{% extends 'tracker/layout.html' %}
+{% load static %}
+
+{% block title %}Search - Mediadex{% endblock %}
+
+{% block body %}
+<div>
+    <form action="{% url 'search' %}" method="GET" class="ms-auto d-flex" role="search">
+        <div class="input-group">
+            <div class="form-floating">
+                <input id="search-bar" name="q" class="form-control" type="search" placeholder="Search" value="{{ request.GET.q }}" aria-label="Search">
+                <label for="search-bar">Search Movies...</label>
+            </div>
+            <span class="input-group-text">
+                <button class="btn hoverable" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+</div>
+<hr>
+
+<div id="loading" style="display: block;">
+    <p class="placeholder-glow">
+        <span class="placeholder rounded col-6"></span>
+        <span class="placeholder rounded placeholder-sm col-8"></span>
+        <span class="placeholder rounded placeholder-sm col-2"></span>
+        <span class="placeholder rounded placeholder-sm col-4"></span>
+        <span class="placeholder rounded placeholder-sm col-6"></span>
+    </p>
+</div>
+<div id="no-matches" class="text-center" style="display: none;">
+    <img src="{% static 'tracker/images/no_matches.png' %}" alt="No Matches Found." width="150" height="150">
+</div>
+<div id="results" style="display: none;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'tracker/modules/search.js' %}"></script>
+{% endblock %}

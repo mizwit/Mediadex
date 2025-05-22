@@ -1,0 +1,80 @@
+:root {
+    /* Set variables for accent colors */
+    --primary: #014E4B;
+    --secondary: #FF8A65;
+    --tertiary: #C5E1A5;
+}
+
+.brand-name {
+    font-family: "Audiowide", sans-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+#dex {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Change dex size depending on screen size */
+@media (min-width: 768px) {
+    #dex {
+        max-width: 600px;
+        height: 900px;
+    }
+}
+@media (max-width: 768px) {
+    #dex {
+        max-width: 400px;
+        height: 600px;
+    }
+}
+@media (min-width: 425px) {
+    #dex-main {
+        padding-left: 48px !important;
+        padding-right: 48px !important;
+    }
+}
+@media (max-width: 425px) {
+    #dex-main {
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+}
+@media (max-width: 400px) {
+    #dex-main {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+@media (max-width: 375px) {
+    #dex-main {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+
+/* Highlight buttons on interaction */
+.hoverable {
+    transition: background-color 0.3s ease !important;
+}
+.hoverable:hover {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+#theme {
+    height: 37px;
+    width: 37px;
+    border-radius: 50%;
+}
+
+#backdrop, .backdrop {
+    -webkit-mask-image: linear-gradient( 
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 0) 100%
+    ) !important;
+    mask-image: linear-gradient(
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 0) 100%
+    ) !important;
+}

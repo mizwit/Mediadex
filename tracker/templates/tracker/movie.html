@@ -1,0 +1,30 @@
+{% extends 'tracker/layout.html' %}
+{% load static %}
+
+{% block header %}
+<img id="backdrop">
+{% endblock %}
+
+{% block body %}
+<div id="loading" class="text-center" style="display: block;">
+    <p class="placeholder-glow">
+        <span class="placeholder rounded col-6"></span>
+        <span class="placeholder rounded col-4"></span>
+        <span class="placeholder rounded col-8"></span>
+        <span class="placeholder rounded col-2"></span>
+        <span class="placeholder rounded col-4"></span>
+        <span class="placeholder rounded col-6"></span>
+        <span class="placeholder rounded col-2"></span>
+        <span class="placeholder rounded col-8"></span>
+    </p>
+</div>
+<div id="error" class="text-center" style="display: none;">
+    <img src="{% static 'tracker/images/error.png' %}" alt="Something Went Wrong." width="250" height="250">
+</div>
+<div id="details" data-movie-id="{{ movie_id }}" style="display: none;">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'tracker/modules/movie.js' %}"></script>
+{% endblock %}

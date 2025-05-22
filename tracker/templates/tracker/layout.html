@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% if user.is_authenticated %}{{ user.username }} - {% endif %}Mediadex{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'tracker/images/favicon.ico' %}">
+        <link href="{% static 'tracker/styles.css' %}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+            @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css");
+        </style>
+        <script>
+            const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+            const staticImages = "{% static 'tracker/images/' %}";
+            const tmdbImages = "https://image.tmdb.org/t/p/";
+        </script>
+    </head>
+    <body>
+        <div class="d-flex flex-column min-vh-100">
+            <header style="background-color: var(--primary);">
+                <nav class="container navbar navbar-expand-md sticky-top">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-items" aria-controls="navbar-items" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a class="navbar-brand" href="{% url 'home' %}">
+                            <img src="{% static 'tracker/images/logo.png' %}" alt="Mediadex Logo" width="40" height="40">
+                            <h5 class="brand-name d-inline" style="color: var(--tertiary);">Mediadex</h5>
+                        </a>
+                        <div class="collapse navbar-collapse px-3" id="navbar-items">
+                            <div class="navbar-nav">
+                                <a class="nav-link rounded hoverable" href="{% url 'home' %}">
+                                    <h6 style="color: var(--secondary);">Home</h6>
+                                </a>
+                                {% if user.is_authenticated %}
+                                <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link rounded hoverable">
+                                        <h6 style="color: var(--secondary)">Logout</h6>
+                                    </button>
+                                    <input type="hidden" name="next" value="{% url 'login' %}">
+                                </form>
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle rounded hoverable" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" height="30" width="30" style="border-radius: 50%;">
+                                        <h6 class="d-inline" style="color: var(--secondary)">{{ user.profile.display_name }}</h6>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{% url 'watched' %}">Watched</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'watchlist' %}">Watchlist</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'favorites' %}">Favorites</a></li>
+                                    </ul>
+                                </div>
+                                {% else %}
+                                <a class="nav-link rounded hoverable" href="{% url 'register' %}">
+                                    <h6 style="color: var(--secondary)">Register</h6>
+                                </a>
+                                <a class="nav-link rounded hoverable" href="{% url 'login' %}">
+                                    <h6 style="color: var(--secondary)">Login</h6>
+                                </a>
+                                {% endif %}
+                            </div>
+                            <form action="{% url 'search' %}" method="GET" class="ms-auto d-flex" role="search">
+                                <div class="input-group">
+                                    <input name="q" class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    <span class="input-group-text">
+                                        <button class="btn hoverable" type="submit">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="theme" class="nav-link text-center hoverable text-white">
+                            <i id="mode-icon" class="bi bi-sun-fill" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            {% block header %}
+            {% endblock %}
+
+            <main class="flex-grow-1 container py-4">
+                {% block body %}
+                {% endblock %}
+            </main>
+
+            <footer class="py-3" style="background-color: var(--primary);">
+                <div class="row text-center">
+                    <div class="fw-bold col-12" style="color: var(--tertiary);">
+                        © 2025 Mediadex
+                    </div>
+                    <div class="col-12" style="color: var(--secondary);">
+                        <img src="{% static 'tracker/images/tmdb_logo.svg' %}" alt="TMDB" height="10">
+                        <small>This product uses the TMDB API but is not endorsed or certified by TMDB.</small>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <script src="{% static 'tracker/main.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,89 @@
+{% extends 'tracker/dex.html' %}
+{% load static %}
+
+{% block dex_head %}
+<h1 class="display-4 font-monospace fw-bold" style="color: var(--tertiary);">Profile</h1>
+{% endblock %}
+
+{% block dex_body %}
+<div class="d-flex flex-column justify-content-start align-items-stretch overflow-y-auto">
+    {% for field, error_list in form.errors.items %}
+    {% for error in error_list %}
+    <div class="alert alert-danger alert-dismissible mb-2" role="alert">
+        <div>{{ error }}</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%  endfor %}
+    {%  endfor %}
+
+    <div id="user-profile" class="row mb-2" style="display: flex;">
+        <div class="col-6 col-md-4">
+            <img src="{{ user.profile.avatar.url }}" class="img-thumbnail" alt="{{ user.username }}" width="100" height="100">
+        </div>
+        <div class="col-6 col-md-8">
+            <div id="show-profile" class="text-black" style="display: block;">
+                <h3>{{ user.profile.display_name }}</h3>
+                <h5 class="text-secondary">@{{ user.username }}</h5>
+            </div>
+            <div id="edit-profile" class="" style="display: none;">
+                <form id="profile-form" action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="py-1">
+                        {{ form.display_name }}
+                    </div>
+                    <div class="py-1">
+                        {{ form.avatar }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="user-stats" class="card mb-2">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                    <div class="fw-bold">Watched</div>
+                    Movies - {{ watched_count }}
+                </div>
+                <a class="icon-link icon-link-hover" href="{% url 'watched' %}">
+                    <i class="bi bi-arrow-right"></i> 
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                    <div class="fw-bold">Watchlist</div>
+                    Movies - {{ watchlist_count }}
+                </div>
+                <a class="icon-link icon-link-hover" href="{% url 'watchlist' %}">
+                    <i class="bi bi-arrow-right"></i> 
+                </a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                    <div class="fw-bold">Favorites</div>
+                    Movies - {{ favorites_count }}
+                </div>
+                <a class="icon-link icon-link-hover" href="{% url 'favorites' %}">
+                    <i class="bi bi-arrow-right"></i> 
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block dex_tail %}
+<button id="edit-btn" class="btn btn-lg border text-white hoverable" style="background-color: var(--secondary); display: block;">
+    <i class="bi bi-pencil-square"></i>
+    Edit Profile
+</button>
+<button type="submit" form="profile-form" id="save-btn" class="btn btn-lg border text-black hoverable" style="background-color: var(--tertiary); display: none;">
+    <i class="bi bi-floppy"></i>
+    Save Changes
+</button>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'tracker/modules/profile.js' %}"></script>
+{% endblock %}
