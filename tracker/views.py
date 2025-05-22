@@ -1,6 +1,6 @@
 import datetime
 import json
-from urllib.parse import urlencode
+import logging
 
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -15,6 +15,10 @@ import requests
 
 from .models import Genre, Movie, Profile
 from .forms import RegisterForm, ProfileForm
+
+
+# Set up logger for this file
+logger = logging.getLogger(__name__)
 
 
 # Take environment variables from .env file
@@ -36,13 +40,14 @@ def tmdb_api(request, endpoint):
         "accept": "application/json",
     }
 
-    print(f"Fetching data from {url}...")
+    logger.info(f"Fetching data from {url}...")
     response = requests.get(url, headers=headers)
     status = response.status_code
     data = response.json()
     
-    print(f"Status: {status}")
-    if status != 200: print(data)
+    logger.info(f"Status: {status}")
+    if status != 200:
+        logger.warning(data)
     return JsonResponse(data, status=status)
 
 
@@ -97,7 +102,7 @@ def register(request):
     """Register new user"""
 
     if request.method == 'POST':
-        print("Registering new user...")
+        logger.info("Registering new user...")
         form = RegisterForm(request.POST)
         if form.is_valid():
             # Create and save new User object
@@ -111,10 +116,10 @@ def register(request):
                 display_name = form.cleaned_data.get('display_name'),
             )
             profile.save()
-            print(f"User '{user.username}' Registered Successfully.")
+            logger.info(f"User '{user.username}' Registered Successfully.")
 
             return HttpResponseRedirect(reverse('profile'))
-        print(f"Registration Failed.")
+        logger.error(f"Registration Failed.")
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', context={
@@ -127,7 +132,7 @@ def profile(request):
     """Display and Edit User Profile"""
 
     if request.method == "POST":
-        print("Editing user profile...")
+        logger.info("Editing user profile...")
         form = ProfileForm(
             request.POST, request.FILES,
             initial = {"avatar": None},
@@ -135,9 +140,9 @@ def profile(request):
         )
         if form.is_valid():
             form.save()
-            print(f"Edit User '{request.user.username}' Profile Successful.")
+            logger.info(f"Edit User '{request.user.username}' Profile Successful.")
             return HttpResponseRedirect(reverse('profile'))
-        print(f"Edit User '{request.user.username}' Profile Failed.")
+        logger.warning(f"Edit User '{request.user.username}' Profile Failed.")
     else:
         form = ProfileForm(
             initial = {"avatar": None},
@@ -187,26 +192,26 @@ def status_movie(request, movie_id):
         "watchlist": movie_id in user_profile.watchlist.all().values_list('tmdb_id', flat=True),
         "favorites": movie_id in user_profile.favorites.all().values_list('tmdb_id', flat=True),
     }
-    print(f"Sending movie status data... \n{data}")
+    logger.info(f"Sending movie status data... \n{data}")
     return JsonResponse(data, status=200)
 
 
 def new_genre(data):
     """Helper function to create new Genre object using TMDB api data"""
-    print(f"Creating new Genre object for TMDB id '{data.get('id')}'...")
+    logger.info(f"Creating new Genre object for TMDB id '{data.get('id')}'...")
     genre = Genre(
         tmdb_id = data.get('id'),
         name = data.get('name', '').strip().lower(), # Normalize genre names
     )
     genre.save()
-    print(f"Success: Genre object for TMDB id '{data.get('id')}' created.")
+    logger.info(f"Success: Genre object for TMDB id '{data.get('id')}' created.")
     return genre
 
 
 def new_movie(data):
     """Helper function to create new Movie object using TMDB api data"""
     
-    print(f"Creating new Movie object for TMDB id '{data.get('id')}'...")
+    logger.info(f"Creating new Movie object for TMDB id '{data.get('id')}'...")
     movie = Movie(
         tmdb_id = data.get('id'),
         poster_path = data.get('poster_path', None),
@@ -241,7 +246,7 @@ def new_movie(data):
         movie.vote_count = int(vote_count)
     
     movie.save()
-    print(f"Success: Movie object for TMDB id '{data.get('id')}' created.")
+    logger.info(f"Success: Movie object for TMDB id '{data.get('id')}' created.")
     return movie
 
 
@@ -251,7 +256,7 @@ def update_movie(request, movie_id):
 
     if request.method == "PUT":
         data = json.loads(request.body)
-        print(f"Received request to update movie in collection. \n{data}")
+        logger.info(f"Received request to update movie in collection. \n{data}")
         collection = data.get('collection', None)
         current_status = data.get('current_status', None)
 
@@ -280,7 +285,7 @@ def update_movie(request, movie_id):
 
         # Remove from collection if already present
         if current_status == True:
-            print(f"Removing '{movie.title}' from {request.user.username}'s {collection} collection...")
+            logger.info(f"Removing '{movie.title}' from {request.user.username}'s {collection} collection...")
             match collection:
                 case 'watched':
                     user_profile.watched.remove(movie)
@@ -291,7 +296,7 @@ def update_movie(request, movie_id):
 
         # Add to collection if not present
         elif current_status == False:
-            print(f"Adding '{movie.title}' to {request.user.username}'s {collection} collection...")
+            logger.info(f"Adding '{movie.title}' to {request.user.username}'s {collection} collection...")
             match collection:
                 case 'watched':
                     user_profile.watched.add(movie)
@@ -358,7 +363,7 @@ def collection_api(request, collection):
         case _:
             data["error"] = f"Invalid collection name '{collection}'. Try 'watched', 'watchlist', 'favorites'"
             status = 404
-    print(f"Sending collection '{collection}' data for user '{request.user.username}' sorted by '{sort_order}'...")
+    logger.info(f"Sending collection '{collection}' data for user '{request.user.username}' sorted by '{sort_order}'...")
     return JsonResponse(data, status=status)
 
 

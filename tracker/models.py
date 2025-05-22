@@ -138,7 +138,8 @@ class Profile(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if not self.display_name: self.display_name = self.user.username
+        if not self.display_name: 
+            self.display_name = self.user.username
         super().save(*args, **kwargs)
 
         # Crop and save image as 100x100 pixels
