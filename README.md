@@ -26,9 +26,16 @@ pip install -r requirements.txt
 DEBUG=on
 SECRET_KEY=your-secret-key
 TMDB_API=your-tmdb-api-key
+ADMIN_NAME=admin-name
+ADMIN_EMAIL=admin-email
+EMAIL_HOST=smtp-domain-name
+EMAIL_HOST_USER=your-sender-email
+EMAIL_HOST_PASSWORD=your-sender-password
 ```
 - You can generate a Django secret key using online tools.
 - Sign up for a TMDB account and generate an API key.
+- Error notifications will be sent to Admin Name and Email
+- Use your SMTP provider's credentials for sending emails
 
 4. Run Migrations
 ```bash

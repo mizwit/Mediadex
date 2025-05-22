@@ -175,3 +175,20 @@ LOGGING = {
         'level': 'DEBUG' if DEBUG else 'INFO',
     },
 }
+
+
+# SMTP Email backend configuration
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = 'webmaster@mediadex'
+SERVER_EMAIL = 'root@mediadex'
+
+# Notify admin of 500 errors
+ADMINS = [(env('ADMIN_NAME'), env('ADMIN_EMAIL'))]
