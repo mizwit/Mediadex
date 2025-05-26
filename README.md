@@ -16,12 +16,7 @@ git clone https://github.com/manasauriz/Mediadex.git
 cd Mediadex
 ```
 
-2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-3. Set Up the `.env` File. In the root directory, create a file named `.env` with the following contents:
+2. Set Up the `.env` File. In the root directory, create a file named `.env` with the following contents:
 ```env
 DEBUG=on
 SECRET_KEY=your-secret-key
@@ -37,39 +32,33 @@ EMAIL_HOST_PASSWORD=your-sender-password
 - Error notifications will be sent to Admin Name and Email
 - Use your SMTP provider's credentials for sending emails
 
-4. Run Migrations
+3. Execute Build Commands
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+./build.sh
 ```
 
-5. Set Up the Cache Table
-```bash
-python manage.py createcachetable
-```
-
-6. Create a Superuser (Optional)
+4. Create a Superuser (Optional)
 ```bash
 python manage.py createsuperuser
 ```
 
-7. Run the Development Server and visit the app on your browser
+5. Run the Server and visit the app on your browser
 ```bash
-python manage.py runserver
+python manage.py runserver  # Development Server
+```
+```bash
+gunicorn Mediadex.wsgi:application  # Production Server
 ```
 
 ## Acknowledgements
 
-### Libraries & Resources
+The concept and design of Mediadex draws inspiration from existing media tracking platforms, namely **Letterboxd** and **Serializd**.
+
 This project makes use of several public services:
 - **TMDB API** – for fetching movie data.
 - **Bootstrap Icons** – for UI icons throughout the site.
 - **Google Fonts** – specifically the Audiowide font.
 
-### Inspirations
-The concept and design of Mediadex draws inspiration from existing media tracking platforms, namely **Letterboxd** and **Serializd**.
-
-### Use of Generative AI
 **ChatGPT** was used throughout the project for the following:
 - Designing visual assets like the logo, favicon, and error images.
 - Assisting in bug resolution and providing code suggestions.
