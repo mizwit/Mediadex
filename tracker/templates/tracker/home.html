@@ -76,7 +76,7 @@
     <hr>
     <div class="row">
         {% for movie in collection.movies %}
-        <div class="col-4 col-sm-3 col-md-2 col-xxl-1 text-center mb-4">
+        <div class="col-4 col-sm-3 col-md-2 text-center mb-4">
             <a href="{% url 'movie' movie.id %}">
                 <div class="movie-card card shadow shadow-lg">
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="card-img" alt="{{ movie.title }}">

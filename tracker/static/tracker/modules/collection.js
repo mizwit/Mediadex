@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         moviesDiv.innerHTML = '';
         movies.forEach(movie => {
             const movieDiv = document.createElement('div');
-            movieDiv.classList.add('col-4', 'col-sm-3', 'col-md-2', 'col-xxl-1', 'text-center', 'mb-4');
+            movieDiv.classList.add('col-4', 'col-sm-3', 'col-md-2', 'text-center', 'mb-4');
 
             // Link to movie page
             const movieLink = document.createElement('a');
