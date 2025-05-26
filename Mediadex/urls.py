@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include("tracker.urls")),
 ]
 
-# Access user uploaded media like avatars
+# Access user uploaded media in development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

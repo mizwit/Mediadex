@@ -28,4 +28,7 @@ urlpatterns = [
     path("api/status/movie/<int:movie_id>", views.status_movie, name="status_movie"),
     path("api/update/movie/<int:movie_id>", views.update_movie, name="update_movie"),
     path("api/collection/<str:collection>", views.collection_api, name="collection_api"),
+
+    # Serve user uploaded media
+    path('media/<str:filename>', views.serve_media, name="serve_media"),
 ]

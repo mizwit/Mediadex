@@ -46,7 +46,7 @@
                                 </form>
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle rounded hoverable" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" height="30" width="30" style="border-radius: 50%;">
+                                        <img src="{% url 'serve_media' filename=user.profile.avatar.name %}" alt="{{ user.username }}" height="30" width="30" style="border-radius: 50%;">
                                         <h6 class="d-inline" style="color: var(--secondary)">{{ user.profile.display_name }}</h6>
                                     </a>
                                     <ul class="dropdown-menu">

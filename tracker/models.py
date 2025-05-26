@@ -116,8 +116,8 @@ class Profile(models.Model):
         blank = True,
     )
     avatar = models.ImageField(
-        upload_to = 'avatars',
-        default = 'avatars/default.jpg',
+        upload_to = '',
+        default = 'default.jpg',
         blank = True,
         validators = [validate_image_size],
     )

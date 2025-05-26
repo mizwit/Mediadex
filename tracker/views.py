@@ -1,12 +1,13 @@
 import datetime
 import json
 import logging
+import os
 
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, FileResponse, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -365,6 +366,15 @@ def collection_api(request, collection):
             status = 404
     logger.info(f"Sending collection '{collection}' data for user '{request.user.username}' sorted by '{sort_order}'...")
     return JsonResponse(data, status=status)
+
+
+@login_required
+def serve_media(request, filename):
+    file_path = os.path.join(settings.MEDIA_ROOT, filename)
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'))
+    else:
+        raise Http404("Avatar not found")
 
 
 # Access limited to admin (superuser)
