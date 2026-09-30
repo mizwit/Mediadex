@@ -58,8 +58,3 @@ This project makes use of several public services:
 - **TMDB API** – for fetching movie data.
 - **Bootstrap Icons** – for UI icons throughout the site.
 - **Google Fonts** – specifically the Audiowide font.
-
-**ChatGPT** was used throughout the project for the following:
-- Designing visual assets like the logo, favicon, and error images.
-- Assisting in bug resolution and providing code suggestions.
-- Proofreading documentation, including this README.
